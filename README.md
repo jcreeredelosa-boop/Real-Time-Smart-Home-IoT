@@ -121,7 +121,9 @@ The system is designed to monitor four areas: Kitchen, Bedroom, Living Room, and
 
 ## Authors
 
-**[Add Project Authors Here]**
+**Kent Jesser Neri**
+**Alwyn Jade Reuyan**
+**JC Ree Redelosa**
 
 **Project:** Smart Home IoT Monitoring System
 

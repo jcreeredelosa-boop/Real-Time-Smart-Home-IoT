@@ -1,52 +1,130 @@
-# BCA152 Project 3 – Smart Home Logging, Monitoring, and Remote Control
+# Smart Home IoT Monitoring System (ESP32 + Home Assistant + Grafana)
 
-This workspace is a starter structure for the four-node project described in the BCA152 Project 3 handout.
+An IoT-based smart home monitoring system built using ESP32 development boards and the ESP-IDF framework. It monitors temperature, humidity, motion, and light conditions across four areas: Kitchen, Bedroom, Living Room, and Bathroom.
 
-## Important
-- The project requires **four physical ESP32 boards operating simultaneously**. This workspace does not replace that requirement.
-- Each room is a separate PlatformIO project using **native ESP-IDF** (`framework = espidf`) and `app_main()`. It does not use Arduino.
-- The current firmware is a **Stage 1 scaffold**: it initializes the PIR and LDR interfaces and starts FreeRTOS tasks. DHT22 acquisition, Wi-Fi, InfluxDB, MQTT, and final servo behavior will be added and tested in later stages.
-- Confirm your exact ESP32 board and sensor module pin labels before wiring. Do not connect an unverified 5 V output to an ESP32 GPIO.
-- The default GPIO assignments are starting suggestions for a classic ESP32 DevKit/WROOM board, not universal pinouts.
+The system integrates Mosquitto MQTT, Telegraf, InfluxDB, and Grafana for real-time data communication, storage, and visualization. Home Assistant is also integrated to provide remote control of the Living Room curtain demonstration.
 
-## Folder layout
+[framework](https://img.shields.io/badge/framework-ESP--IDF-red) [platform](https://img.shields.io/badge/platform-ESP32-blue) [automation](https://img.shields.io/badge/automation-Home%20Assistant-41BDF5) [protocol](https://img.shields.io/badge/protocol-MQTT-660066) [database](https://img.shields.io/badge/database-InfluxDB-22ADF6) [visualization](https://img.shields.io/badge/visualization-Grafana-orange)
 
-- `Kitchen_Node/` – kitchen ESP32 PlatformIO project
-- `Bathroom_Node/` – bathroom ESP32 PlatformIO project
-- `Bedroom_Node/` – bedroom ESP32 PlatformIO project
-- `Living_Room_Node/` – living-room project, reserved for the SG90 servo
-- `Documentation/` – wiring, pin mapping, and test records
-- `Grafana/` – dashboard exports/instructions added later
+---
 
-## Open in VS Code
+## Features
 
-1. Extract the ZIP file.
-2. Open the extracted `BCA152-Smart-Home-IoT` folder in Visual Studio Code.
-3. Install the PlatformIO IDE extension.
-4. Open one room folder at a time as its own PlatformIO project (for example, `Kitchen_Node`).
-5. In PlatformIO, build first, then connect the matching ESP32 and upload.
-6. Open the PlatformIO Serial Monitor at 115200 baud.
+- Four-area environmental monitoring: Kitchen, Bedroom, Living Room, and Bathroom.
+- Temperature and humidity monitoring using DHT11 sensors.
+- Motion detection using PIR sensors.
+- Light detection using LDR sensors.
+- MQTT-based wireless communication.
+- Real-time sensor data collection using Telegraf.
+- Time-series data storage using InfluxDB 2.
+- Real-time dashboards using Grafana.
+- Living Room curtain control through Home Assistant.
+- Docker-based backend services.
 
-## Initial pin plan (verify before wiring)
+## Hardware Components
 
-| Signal | GPIO | Notes |
-|---|---:|---|
-| DHT22 data | 4 | Requires correct pull-up arrangement; driver will be added in Stage 2 |
-| PIR OUT | 27 | Confirm module output is compatible with 3.3 V GPIO |
-| LDR AO | 34 | ADC1 input-only pin on classic ESP32; use only if your LDR board has AO |
-| SG90 signal | 18 | Living-room node only; servo gets a separate suitable 5 V supply |
+- ESP32 Development Boards (4 units)
+- DHT11 Temperature and Humidity Sensors
+- PIR Motion Sensors
+- LDR Light Sensors
+- LED (Curtain Demonstration)
+- Resistors
+- Breadboards and Jumper Wires
 
-All sensor grounds must share a common ground with the ESP32. The servo supply ground must also connect to the living-room ESP32 GND. Do not power the servo from the ESP32 3.3 V pin.
+## Technologies Used
 
-## Next development stages
+- ESP32 and ESP-IDF
+- C Programming Language
+- Visual Studio Code and PlatformIO
+- Mosquitto MQTT Broker
+- Telegraf
+- InfluxDB 2
+- Grafana
+- Home Assistant OS
+- Oracle VirtualBox
+- Docker and Docker Compose
 
-1. Verify board model and sensor pin labels.
-2. Wire and test one node.
-3. Implement DHT22 driver and validated sensor readings.
-4. Add Wi-Fi and timestamp synchronization.
-5. Add InfluxDB logging.
-6. Add Grafana dashboard and alert.
-7. Add MQTT command validation and living-room servo control.
-8. Repeat for all four nodes and perform the required simultaneous test.
+## System Communication
 
-Never commit Wi-Fi passwords, InfluxDB tokens, or MQTT credentials. Use a local, untracked configuration file for secrets.
+```text
+Kitchen ESP32 ──────┐
+Bedroom ESP32 ──────┤
+Living Room ESP32 ──┼── MQTT ── Mosquitto
+Bathroom ESP32 ─────┘                |
+                                     |
+                                  Telegraf
+                                     |
+                                  InfluxDB
+                                     |
+                                   Grafana
+
+Home Assistant ───── MQTT ───── Living Room ESP32
+                                  (Curtain Control)
+```
+
+## MQTT Configuration
+
+| Topic | Purpose |
+|---|---|
+| `smart-home/sensors/kitchen` | Kitchen sensor data |
+| `smart-home/sensors/bedroom` | Bedroom sensor data |
+| `smart-home/sensors/living_room` | Living Room sensor data |
+| `smart-home/sensors/bathroom` | Bathroom sensor data |
+| `smart-home/living-room/curtains/set` | Receives curtain commands |
+| `smart-home/living-room/curtains/status` | Publishes curtain status |
+
+Sensor data is transmitted using MQTT in InfluxDB line protocol format.
+
+## Installation and Setup
+
+Clone the repository:
+
+```bash
+git clone YOUR_REPOSITORY_URL
+cd YOUR_PROJECT_FOLDER
+```
+
+Open the project in Visual Studio Code with PlatformIO and ESP-IDF installed.
+
+Configure the Wi-Fi credentials and MQTT broker address in the appropriate ESP32 firmware configuration files. Keep passwords and private credentials out of public repositories.
+
+Build and upload the firmware:
+
+```bash
+pio run
+pio run -t upload
+```
+
+Monitor the ESP32:
+
+```bash
+pio device monitor
+```
+
+Start the backend services using Docker Compose:
+
+```bash
+docker compose up -d
+```
+
+Access the services:
+
+- **InfluxDB:** `http://localhost:8086`
+- **Grafana:** `http://localhost:3000`
+- **Home Assistant:** Access through its configured VirtualBox network address.
+
+Configure the MQTT integration in Home Assistant and connect the Living Room curtain entity to the appropriate MQTT topics.
+
+## Project Status
+
+The system is designed to monitor four areas: Kitchen, Bedroom, Living Room, and Bathroom. Sensor readings are transmitted through MQTT, stored in InfluxDB, and visualized in Grafana. Living Room curtain control is also integrated through Home Assistant.
+
+## Authors
+
+**[Add Project Authors Here]**
+
+**Project:** Smart Home IoT Monitoring System
+
+---
+
+*Academic Laboratory Project — IoT and Embedded Systems*

@@ -4,7 +4,7 @@ An IoT-based smart home monitoring system built using ESP32 development boards a
 
 The system integrates Mosquitto MQTT, Telegraf, InfluxDB, and Grafana for real-time data communication, storage, and visualization. Home Assistant is also integrated to provide remote control of the Living Room curtain demonstration.
 
-[framework](https://img.shields.io/badge/framework-ESP--IDF-red) [platform](https://img.shields.io/badge/platform-ESP32-blue) [automation](https://img.shields.io/badge/automation-Home%20Assistant-41BDF5) [protocol](https://img.shields.io/badge/protocol-MQTT-660066) [database](https://img.shields.io/badge/database-InfluxDB-22ADF6) [visualization](https://img.shields.io/badge/visualization-Grafana-orange)
+![framework](https://img.shields.io/badge/framework-ESP--IDF-red) ![platform](https://img.shields.io/badge/platform-ESP32-blue) ![automation](https://img.shields.io/badge/automation-Home%20Assistant-41BDF5) ![protocol](https://img.shields.io/badge/protocol-MQTT-660066) ![database](https://img.shields.io/badge/database-InfluxDB-22ADF6) ![visualization](https://img.shields.io/badge/visualization-Grafana-orange) ![hardware](https://img.shields.io/badge/hardware-DHT11%20%7C%20PIR%20%7C%20LDR-green) ![control](https://img.shields.io/badge/control-Remote%20Curtain%20Control-purple)
 
 ---
 

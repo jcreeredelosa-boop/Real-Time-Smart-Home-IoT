@@ -1,0 +1,5 @@
+Room,Device ID,DHT22 DATA,PIR OUT,LDR AO,Servo Signal,Verified By,Notes
+Kitchen,kitchen,GPIO4,GPIO27,GPIO34,,,
+Bathroom,bathroom,GPIO4,GPIO27,GPIO34,,,
+Bedroom,bedroom,GPIO4,GPIO27,GPIO34,,,
+Living Room,living_room,GPIO4,GPIO27,GPIO34,GPIO18,,
